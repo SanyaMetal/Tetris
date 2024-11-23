@@ -1,12 +1,18 @@
 package tetris
 
 class Board (val width: Int, val height: Int){
-  val grid = Array.ofDim[Int](height,width)
+  val invisibleRows = 3
+  val totalHeight = height + invisibleRows
+
+  val grid = Array.ofDim[Int](totalHeight,width)
+
+
 
   var score:Int = 0
   var level:Int = 1
 
-  var currentTetromino: Tetromino = Tetromino.randomTetromino(width / 2, 0)
+  var currentTetromino: Tetromino = Tetromino.randomTetromino(width / 2, 0 + invisibleRows)
+  var nextTetromino: Tetromino = Tetromino.randomTetromino(width / 2 , invisibleRows)
 
   def isOccupied(x: Int, y: Int): Boolean ={
     grid(y)(x) !=0
@@ -14,7 +20,7 @@ class Board (val width: Int, val height: Int){
 
   def canPlaceTetromino(tetromino: Tetromino): Boolean = {
     tetromino.blocks.forall {
-      case (x, y) => x >= 0 && x < width && y >= 0 && y < height && !isOccupied(x, y)
+      case (x, y) => x >= 0 && x < width && y >= 0 && y < totalHeight && !isOccupied(x, y)
     }
   }
 
@@ -79,18 +85,20 @@ class Board (val width: Int, val height: Int){
     }
 
     val newGrid = Array.fill(clearedCount, width)(0) ++remainingRows
-    Array.copy(newGrid, 0, grid, 0, height)
+    Array.copy(newGrid, 0, grid, 0, totalHeight)
+
+    println(s"SCORE ====== $score")
 
     clearedCount
-
   }
 
   def spawnTetromino(): Boolean = {
-    val newTetromino = Tetromino.randomTetromino(width / 2, 0)
-    if (canPlaceTetromino(newTetromino)) {
-      currentTetromino = newTetromino
+
+    if (canPlaceTetromino(nextTetromino)){
+      currentTetromino = nextTetromino
+      nextTetromino = Tetromino.randomTetromino(width / 2, invisibleRows)
       true
-    } else {
+    }else{
       false
     }
   }
