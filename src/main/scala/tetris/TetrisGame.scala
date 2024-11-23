@@ -75,6 +75,8 @@ class TetrisGame(board: Board) extends JFrame{
        case KeyEvent.VK_D => board.moveTetrominoRight()
        case KeyEvent.VK_S => board.moveTetrominoDown()
        case KeyEvent.VK_W => board.rotateTetromino()
+       case KeyEvent.VK_P => timer.stop()
+       case KeyEvent.VK_G => timer.start()
        case _ =>
      }
       gamePanel.repaint()

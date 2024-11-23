@@ -1,0 +1,3 @@
+package tetris
+
+class MainMenu

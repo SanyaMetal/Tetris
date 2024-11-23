@@ -47,13 +47,22 @@ class Board (val width: Int, val height: Int){
     }
   }
 
+//  def rotateTetromino():Unit = {
+//    val newTetromino = currentTetromino.copy()
+//    newTetromino.rotate()
+//    if (canPlaceTetromino(newTetromino)) {
+//      currentTetromino = newTetromino
+//    }
+//  }
+
   def rotateTetromino():Unit = {
-    val newTetromino = currentTetromino.copy()
-    newTetromino.rotate()
-    if (canPlaceTetromino(newTetromino)) {
-      currentTetromino = newTetromino
+    val originalShape = currentTetromino.shape
+    currentTetromino.rotate()
+    if (!canPlaceTetromino(currentTetromino)){
+      currentTetromino.shape = originalShape
     }
   }
+
 
   def clearFullLines(): Int = {
     val (fullRows, remainingRows) = grid.partition(_.forall(_!=0))
